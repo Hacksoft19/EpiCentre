@@ -1,0 +1,64 @@
+const int TriggerPIN1 = 9;         //Ultrasonic Sensor 1
+const int EchoPIN1 = 10;
+const int TriggerPIN2 = 5;         //Ultrasonic Sensor 2
+const int EchoPIN2 = 4;
+const int LED1 = 8;                //GREEN LED
+const int LED2 = 7;                //RED LED
+
+void setup(){
+  pinMode(TriggerPIN1,OUTPUT);
+  pinMode(EchoPIN1,INPUT);
+  pinMode(TriggerPIN2,OUTPUT);
+  pinMode(EchoPIN2,INPUT);
+  pinMode(LED1,OUTPUT);
+  pinMode(LED2,OUTPUT);
+  Serial.begin(9600); 
+  }
+
+void loop(){  
+  digitalWrite(TriggerPIN1,LOW);
+  delayMicroseconds(2);
+  digitalWrite(TriggerPIN1,HIGH);
+  delayMicroseconds(2);
+  digitalWrite(TriggerPIN1,LOW);
+
+  long timedelay = pulseIn(EchoPIN1,HIGH);
+  int distance1 = 0.0343 * (timedelay/2);
+
+  
+
+  delayMicroseconds(2);
+
+  digitalWrite(TriggerPIN2,LOW);
+  delayMicroseconds(2);
+  digitalWrite(TriggerPIN2,HIGH);
+  delayMicroseconds(2);
+  digitalWrite(TriggerPIN2,LOW);
+
+  long td = pulseIn(EchoPIN2,HIGH);
+  int distance2 = 0.0343 * (td/2);
+
+  int req_distance = (distance1+distance2)/2;
+  
+  if((distance1 > (req_distance-3) && distance1 < (req_distance+3)) || (distance2 > (req_distance-3) && distance2 < (req_distance+3))) 
+  {
+  digitalWrite(LED1,HIGH);
+  delay(500);
+  digitalWrite(LED1,LOW);
+  
+  }
+  else
+  {
+  digitalWrite(LED2,HIGH);
+  delay(500);
+  digitalWrite(LED2,LOW);
+  }
+  Serial.print("distance1 :");
+  Serial.println(distance1);
+  Serial.print("req_distance :");
+  Serial.println(req_distance); 
+  Serial.print("distance2 :");
+  Serial.println(distance2); 
+  Serial.println(" ");
+  
+  }
